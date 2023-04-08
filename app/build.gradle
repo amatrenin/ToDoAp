@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.awddrhz.todoap"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -35,6 +35,7 @@ android {
 
 dependencies {
 
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
@@ -52,6 +53,13 @@ dependencies {
     kapt "androidx.room:room-compiler:2.5.1" // Кодогенератор
     implementation 'androidx.room:room-ktx:2.5.1' // Дополнительно для Kotlin Coroutines, Kotlin Flows
 
-    //lifeCycle
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    // ViewModel and LiveData
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    // alternatively - just ViewModel
+//    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
+    // LiveData
+//    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    // Lifecycles only (without ViewModel or LiveData)
+
+
 }

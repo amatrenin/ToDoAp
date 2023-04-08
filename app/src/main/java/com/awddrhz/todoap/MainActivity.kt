@@ -15,13 +15,14 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.room.Room
+
 import com.awddrhz.todoap.adapter.CustomAdapter
 import com.awddrhz.todoap.data.ToDoItem
 import com.awddrhz.todoap.room.AppDatabase
@@ -31,13 +32,13 @@ import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity(), ItemOnClick {
 
+    private val mMainViewModel: MainViewModel by viewModels()
+
     private lateinit var bContainer: LinearLayout
     private lateinit var fab: FloatingActionButton
     private lateinit var adapter: CustomAdapter
     private lateinit var recyclerview: RecyclerView
-    private lateinit var db: AppDatabase
 
-    private lateinit var mLiveData : LiveData<List<ToDoItem>>
     private lateinit var data : List<ToDoItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,18 +67,8 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
         // Setting the Adapter with the recyclerview
         recyclerview.adapter = adapter
 
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "database-name"
-        )
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
-            .build()
-
-        mLiveData = db.toDoDao().getAllItems()
-
-
-        mLiveData.observe(this) {
+        mMainViewModel.getAllItem()
+        mMainViewModel.todoItemResult.observe(this) {
             data = it
             adapter.updateList(it)
             screenDataValidation(it)
@@ -87,8 +78,8 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
         val intrinsicWidth = deleteIcon?.intrinsicWidth
         val intrinsicHeight = deleteIcon?.intrinsicHeight
         val background = ColorDrawable()
-        val backgroundColor = Color.parseColor("#f44336")
-        val clearPaint = Paint().apply { xfermode = PorterDuffXfermode (PorterDuff.Mode.CLEAR) }
+//        val backgroundColor = Color.parseColor("#f44336")
+//        val clearPaint = Paint().apply { xfermode = PorterDuffXfermode (PorterDuff.Mode.CLEAR) }
 
             ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -124,7 +115,7 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
 
                 // Calculate position of delete icon
                 val iconTop = itemView.top + (itemHeight - intrinsicHeight!!) / 2
-                val iconMargin = (itemHeight - intrinsicHeight!!) / 2
+                val iconMargin = (itemHeight - intrinsicHeight) / 2
                 val iconLeft = itemView.right - iconMargin - intrinsicWidth!!
                 val iconRight = itemView.right - iconMargin
                 val iconBottom = iconTop + intrinsicHeight
@@ -141,7 +132,7 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // this method is called when we swipe our item to right direction.
                 // on below line we are getting the item at a particular position.
-                val deletedCourse: ToDoItem =
+                val deletedTodoItem: ToDoItem =
                     data[viewHolder.adapterPosition]
 
                 // below line is to get the position
@@ -154,19 +145,19 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
 
                 // below line is to notify our item is removed from adapter.
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                db.toDoDao().deleteItem(deletedCourse)
+//                mMainViewMode .toDoDao().deleteItem(deletedCourse)
                 // below line is to display our snackbar with action.
                 // below line is to display our snackbar with action.
                 // below line is to display our snackbar with action.
-                Snackbar.make(recyclerview, "Deleted " + deletedCourse.title, Snackbar.LENGTH_LONG)
+                Snackbar.make(recyclerview, "Deleted " + deletedTodoItem.title, Snackbar.LENGTH_LONG)
                     .setAction(
                         "Undo",
                         View.OnClickListener {
                             // adding on click listener to our action of snack bar.
                             // below line is to add our item to array list with a position.
-//                            data.toMutableList().add(position, deletedCourse)
-
-                            db.toDoDao().insertItem(deletedCourse)
+                            data.toMutableList().add(position, deletedTodoItem)
+                            addItem(deletedTodoItem)
+//                            db.toDoDao().insertItem(deletedCourse)
 
                             // below line is to notify item is
                             // added to our adapter class.
@@ -198,21 +189,19 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
     fun addItem(item: ToDoItem) {
         bContainer.visibility = INVISIBLE
         recyclerview.visibility = VISIBLE
-            db.toDoDao().insertItem(item)
+        mMainViewModel.addItem(item)
 
     }
     fun updateItem(item: ToDoItem) {
         bContainer.visibility = INVISIBLE
         recyclerview.visibility = VISIBLE
-        db.toDoDao().updateItem(item)
-
+        mMainViewModel.updateItem(item)
     }
 
     fun deleteItem(item: ToDoItem) {
         bContainer.visibility = INVISIBLE
         recyclerview.visibility = VISIBLE
-        db.toDoDao().deleteItem(item)
-
+        mMainViewModel.deleteItem(item)
     }
 
     override fun onClikedItem(item: ToDoItem) {
