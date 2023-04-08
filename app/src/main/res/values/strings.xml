@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ToDoAp</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_item">Add Item</string>
+    <string name="add_title_here">Add title here</string>
+    <string name="ad_description_here">Ad description here</string>
+    <string name="ad_number_here">Ad number here</string>
+</resources>
