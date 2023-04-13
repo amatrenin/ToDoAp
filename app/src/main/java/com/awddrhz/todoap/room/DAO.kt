@@ -9,7 +9,7 @@ interface ToDoDao {
     @Query("SELECT * FROM todoitem")
     fun getAllItems(): List<ToDoItem>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun insertItem(toDoItem: ToDoItem)
 
     @Delete

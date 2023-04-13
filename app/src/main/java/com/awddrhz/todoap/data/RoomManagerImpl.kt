@@ -23,7 +23,7 @@ class RoomManagerImpl(private val context: Context) : RoomManager {
        return db.toDoDao().getAllItems()
     }
 
-    override fun addItem(item: ToDoItem) {
+    override fun insertItem(item: ToDoItem) {
         db.toDoDao().insertItem(item)
     }
 

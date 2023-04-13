@@ -1,23 +1,17 @@
 package com.awddrhz.todoap
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,8 +19,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 import com.awddrhz.todoap.adapter.CustomAdapter
 import com.awddrhz.todoap.data.ToDoItem
-import com.awddrhz.todoap.room.AppDatabase
-import com.awddrhz.todoap.utils.CustomDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
@@ -41,6 +33,7 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
 
     private lateinit var data : List<ToDoItem>
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -50,8 +43,8 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
         recyclerview = findViewById<RecyclerView>(R.id.main_rcView)
 
         fab.setOnClickListener {
-            val dialog = CustomDialog(this, true, null)
-            dialog.show()
+            val dialogFragment = CustomDialog(this, true, null)
+            dialogFragment.show(supportFragmentManager, "Custom dialog")
         }
 
         // this creates a vertical layout Manager
@@ -145,7 +138,8 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
 
                 // below line is to notify our item is removed from adapter.
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
-//                mMainViewMode .toDoDao().deleteItem(deletedCourse)
+                mMainViewModel.deleteItem(deletedTodoItem)
+//                    .toDoDao().deleteItem(deletedCourse)
                 // below line is to display our snackbar with action.
                 // below line is to display our snackbar with action.
                 // below line is to display our snackbar with action.
@@ -156,7 +150,7 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
                             // adding on click listener to our action of snack bar.
                             // below line is to add our item to array list with a position.
                             data.toMutableList().add(position, deletedTodoItem)
-                            addItem(deletedTodoItem)
+                            insertItem(deletedTodoItem)
 //                            db.toDoDao().insertItem(deletedCourse)
 
                             // below line is to notify item is
@@ -185,13 +179,13 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
     }
 
 
-    @SuppressLint("SuspiciousIndentation")
-    fun addItem(item: ToDoItem) {
+//    @SuppressLint("SuspiciousIndentation")
+    fun insertItem(item: ToDoItem) {
         bContainer.visibility = INVISIBLE
         recyclerview.visibility = VISIBLE
-        mMainViewModel.addItem(item)
-
+        mMainViewModel.insertItem(item)
     }
+
     fun updateItem(item: ToDoItem) {
         bContainer.visibility = INVISIBLE
         recyclerview.visibility = VISIBLE
@@ -205,8 +199,8 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
     }
 
     override fun onClikedItem(item: ToDoItem) {
-        val dialog = CustomDialog(this, false, item)
-        dialog.show()
+        val dialogFragment = CustomDialog(this, false, item)
+        dialogFragment.show(supportFragmentManager, "Custom dialog")
     }
 
   }
