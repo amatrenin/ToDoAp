@@ -1,4 +1,4 @@
-package com.awddrhz.todoap.data
+package com.awddrhz.todoap.data.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

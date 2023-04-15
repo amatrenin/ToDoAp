@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/blue2">
 
     <TextView
         android:id="@+id/dialog_label"
@@ -41,6 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/ok"
+        android:backgroundTint="@color/blue_button"
         app:layout_constraintEnd_toStartOf="@+id/dialogCancelButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dialog_item_description" />
@@ -51,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/cancel"
+        android:backgroundTint="@color/blue_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/dialogOkButton"
         app:layout_constraintTop_toBottomOf="@+id/dialog_item_description" />

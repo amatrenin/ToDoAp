@@ -1,92 +1,80 @@
-package com.awddrhz.todoap
+package com.awddrhz.todoap.view
 
-import android.annotation.SuppressLint
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.awddrhz.todoap.data.room.ItemOnClick
+import com.awddrhz.todoap.viewModel.MainViewModel
+import com.awddrhz.todoap.R
 
 import com.awddrhz.todoap.adapter.CustomAdapter
-import com.awddrhz.todoap.data.ToDoItem
+import com.awddrhz.todoap.data.room.ToDoItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity(), ItemOnClick {
 
-    private val mMainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
 
-    private lateinit var bContainer: LinearLayout
+    private lateinit var stubContainer: LinearLayout
     private lateinit var fab: FloatingActionButton
     private lateinit var adapter: CustomAdapter
-    private lateinit var recyclerview: RecyclerView
+    private lateinit var recyclerView: RecyclerView
 
     private lateinit var data : List<ToDoItem>
 
-    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fab = findViewById(R.id.main_fab)
-        bContainer = findViewById(R.id.main_no_items_container)
-        recyclerview = findViewById<RecyclerView>(R.id.main_rcView)
+        initView()
+        swipeImplementation()
+        observers()
 
         fab.setOnClickListener {
-            val dialogFragment = CustomDialog(this, true, null)
-            dialogFragment.show(supportFragmentManager, "Custom dialog")
+            val dialogFragment = CustomDialog( true, null)
+            dialogFragment.show(supportFragmentManager, getString(R.string.custom_dialog))
         }
+        mainViewModel.getAllItem()
+    }
 
-        // this creates a vertical layout Manager
-        recyclerview.layoutManager = LinearLayoutManager(this)
-
-        // ArrayList of class ItemsViewModel
-//        val data = ArrayList<ToDoItem>()
-
-        adapter = CustomAdapter(mutableListOf(), this)
-
-        // This will pass the ArrayList to our Adapter
-//        adapter = CustomAdapter(data)
-        // Setting the Adapter with the recyclerview
-        recyclerview.adapter = adapter
-
-        mMainViewModel.getAllItem()
-        mMainViewModel.todoItemResult.observe(this) {
+    private fun observers() {
+        mainViewModel.todoItemResult.observe(this) {
             data = it
             adapter.updateList(it)
             screenDataValidation(it)
         }
+    }
 
+    private fun swipeImplementation() {
         val deleteIcon = ContextCompat.getDrawable(this, R.drawable.cancel_24)
         val intrinsicWidth = deleteIcon?.intrinsicWidth
         val intrinsicHeight = deleteIcon?.intrinsicHeight
         val background = ColorDrawable()
-//        val backgroundColor = Color.parseColor("#f44336")
-//        val clearPaint = Paint().apply { xfermode = PorterDuffXfermode (PorterDuff.Mode.CLEAR) }
 
-            ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
                 target: RecyclerView.ViewHolder
             ): Boolean {
-                // this method is called
-                // when the item is moved.
                 return false
             }
 
-
             // Let's draw our delete view
+            @RequiresApi(Build.VERSION_CODES.M)
             override fun onChildDraw(canvas: Canvas,
                                      recyclerView: RecyclerView,
                                      viewHolder: ViewHolder,
@@ -97,7 +85,7 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
                 val itemHeight = itemView.bottom - itemView.top
 
                 // Draw the red delete background
-                background.color = Color.RED
+                background.color = getColor(R.color.delete)
                 background.setBounds(
                     itemView.right + dX.toInt(),
                     itemView.top,
@@ -128,79 +116,57 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
                 val deletedTodoItem: ToDoItem =
                     data[viewHolder.adapterPosition]
 
-                // below line is to get the position
-                // of the item at that position.
                 val position = viewHolder.adapterPosition
 
-                // this method is called when item is swiped.
-                // below line is to remove item from our array list.
                 data.toMutableList().removeAt(viewHolder.adapterPosition)
 
                 // below line is to notify our item is removed from adapter.
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
-                mMainViewModel.deleteItem(deletedTodoItem)
-//                    .toDoDao().deleteItem(deletedCourse)
+                mainViewModel.deleteItem(deletedTodoItem)
                 // below line is to display our snackbar with action.
-                // below line is to display our snackbar with action.
-                // below line is to display our snackbar with action.
-                Snackbar.make(recyclerview, "Deleted " + deletedTodoItem.title, Snackbar.LENGTH_LONG)
+                Snackbar.make(recyclerView, "Deleted " + deletedTodoItem.title, Snackbar.LENGTH_LONG)
                     .setAction(
-                        "Undo",
+                        getString(R.string.undo),
                         View.OnClickListener {
                             // adding on click listener to our action of snack bar.
                             // below line is to add our item to array list with a position.
                             data.toMutableList().add(position, deletedTodoItem)
-                            insertItem(deletedTodoItem)
-//                            db.toDoDao().insertItem(deletedCourse)
-
+                            mainViewModel.insertItem(deletedTodoItem)
                             // below line is to notify item is
                             // added to our adapter class.
                             adapter.notifyItemInserted(position)
                         }).show()
-
             }
             // at last we are adding this
             // to our recycler view.
-        }).attachToRecyclerView(recyclerview)
-
+        }).attachToRecyclerView(recyclerView)
     }
 
-
-    private fun screenDataValidation(it: List<ToDoItem>?) {
-        if (it != null) {
-            if (it.isEmpty()) {
-                bContainer.visibility = View.VISIBLE
-                recyclerview.visibility = View.INVISIBLE
+    private fun screenDataValidation(list: List<ToDoItem>) {
+            if (list.isEmpty()) {
+                setupStub(showStub = true, showRecycler = false)
             } else {
-                bContainer.visibility = View.INVISIBLE
-                recyclerview.visibility = View.VISIBLE
-            }
+                setupStub(showStub = false, showRecycler = true)
         }
     }
 
-
-//    @SuppressLint("SuspiciousIndentation")
-    fun insertItem(item: ToDoItem) {
-        bContainer.visibility = INVISIBLE
-        recyclerview.visibility = VISIBLE
-        mMainViewModel.insertItem(item)
+    private fun setupStub(showStub: Boolean, showRecycler: Boolean) {
+         stubContainer.isVisible = showStub
+         recyclerView.isVisible = showRecycler
     }
 
-    fun updateItem(item: ToDoItem) {
-        bContainer.visibility = INVISIBLE
-        recyclerview.visibility = VISIBLE
-        mMainViewModel.updateItem(item)
-    }
-
-    fun deleteItem(item: ToDoItem) {
-        bContainer.visibility = INVISIBLE
-        recyclerview.visibility = VISIBLE
-        mMainViewModel.deleteItem(item)
+    private fun initView() {
+        fab = findViewById(R.id.main_fab)
+        stubContainer = findViewById(R.id.main_no_items_container)
+        recyclerView = findViewById<RecyclerView>(R.id.main_rcView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = CustomAdapter(mutableListOf(), this)
+        recyclerView.adapter = adapter
     }
 
     override fun onClikedItem(item: ToDoItem) {
-        val dialogFragment = CustomDialog(this, false, item)
-        dialogFragment.show(supportFragmentManager, "Custom dialog")
+        val dialogFragment = CustomDialog(false, item)
+        dialogFragment.show(supportFragmentManager, getString(R.string.custom_dialog))
     }
-
   }
+

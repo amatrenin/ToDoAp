@@ -1,19 +1,17 @@
-package com.awddrhz.todoap.data
+package com.awddrhz.todoap.data.room
 
 import android.content.Context
 import androidx.room.Room
-import com.awddrhz.todoap.data.RoomManager
-import com.awddrhz.todoap.room.AppDatabase
 
 
 /**
- * Use to manage work with
- */
+ * Manager that handles logic with room data base
+*/
 class RoomManagerImpl(private val context: Context) : RoomManager {
 
     private var db = Room.databaseBuilder(
     context,
-    AppDatabase::class.java, "database-name"
+    AppDatabase::class.java, DATABASE_NAME
     )
     .allowMainThreadQueries()
     .fallbackToDestructiveMigration()
@@ -34,4 +32,8 @@ class RoomManagerImpl(private val context: Context) : RoomManager {
     override fun deleteItem(item: ToDoItem) {
         db.toDoDao().deleteItem(item)
     }
+
+     companion object {
+         private const val DATABASE_NAME = "database-name"
+     }
 }

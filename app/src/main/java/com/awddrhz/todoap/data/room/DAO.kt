@@ -1,8 +1,7 @@
 package com.awddrhz.todoap.room
 
 import androidx.room.*
-import com.awddrhz.todoap.data.ToDoItem
-
+import com.awddrhz.todoap.data.room.ToDoItem
 
 @Dao
 interface ToDoDao {

@@ -4,13 +4,12 @@ package com.awddrhz.todoap.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.awddrhz.todoap.ItemOnClick
+import com.awddrhz.todoap.data.room.ItemOnClick
 import com.awddrhz.todoap.R
-import com.awddrhz.todoap.data.ToDoItem
+import com.awddrhz.todoap.data.room.ToDoItem
 
 class CustomAdapter(private var mList: MutableList<ToDoItem>, private val itemOnClick: ItemOnClick) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
@@ -34,7 +33,6 @@ class CustomAdapter(private var mList: MutableList<ToDoItem>, private val itemOn
         holder.container.setOnClickListener {
             itemOnClick.onClikedItem(mList[position])
         }
-
     }
 
     // return the number of the items in the list

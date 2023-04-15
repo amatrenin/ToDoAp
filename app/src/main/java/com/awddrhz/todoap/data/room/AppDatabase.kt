@@ -1,8 +1,8 @@
-package com.awddrhz.todoap.room
+package com.awddrhz.todoap.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.awddrhz.todoap.data.ToDoItem
+import com.awddrhz.todoap.room.ToDoDao
 
 @Database(entities = [ToDoItem::class], version = 3)
 abstract class AppDatabase : RoomDatabase() {

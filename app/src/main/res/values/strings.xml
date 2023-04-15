@@ -6,4 +6,8 @@
     <string name="add_title_here">Add title here</string>
     <string name="ad_description_here">Ad description here</string>
     <string name="ad_number_here">Ad number here</string>
+    <string name="custom_dialog">Custom dialog</string>
+    <string name="undo">Undo</string>
+    <string name="update_item">Update Item</string>
+    <string name="nothing_to_do">Nothing To Do!!</string>
 </resources>
