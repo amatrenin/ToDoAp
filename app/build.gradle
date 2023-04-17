@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,11 +56,19 @@ dependencies {
 
     // ViewModel and LiveData
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    // alternatively - just ViewModel
-//    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1'
-    // LiveData
-//    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
-    // Lifecycles only (without ViewModel or LiveData)
+
+    //Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    //Unit test
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:1.7.0"
+    testImplementation "org.mockito:mockito-core:5.1.1"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
 
 
+
+}
+kapt {
+    correctErrorTypes = true
 }

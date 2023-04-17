@@ -23,7 +23,9 @@ import com.awddrhz.todoap.adapter.CustomAdapter
 import com.awddrhz.todoap.data.room.ToDoItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ItemOnClick {
 
     private val mainViewModel: MainViewModel by viewModels()

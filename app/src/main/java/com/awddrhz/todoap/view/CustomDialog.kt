@@ -13,11 +13,12 @@ import androidx.fragment.app.activityViewModels
 import com.awddrhz.todoap.viewModel.CustomDialogViewModel
 import com.awddrhz.todoap.viewModel.MainViewModel
 import com.awddrhz.todoap.R
-import com.awddrhz.todoap.data.sharedPrefs.PrefManagerImpl.Companion.PREFS_DESCRIPTION_KEY
-import com.awddrhz.todoap.data.sharedPrefs.PrefManagerImpl.Companion.PREFS_TITLE_KEY
+import com.awddrhz.todoap.data.sharedPrefs.PrefRepositoryImpl.Companion.PREFS_DESCRIPTION_KEY
+import com.awddrhz.todoap.data.sharedPrefs.PrefRepositoryImpl.Companion.PREFS_TITLE_KEY
 import com.awddrhz.todoap.data.room.ToDoItem
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class CustomDialog(
     private val isNewItem: Boolean,
     private val item: ToDoItem?

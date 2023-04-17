@@ -4,13 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.awddrhz.todoap.data.room.RoomManagerImpl
+import androidx.lifecycle.ViewModel
+import com.awddrhz.todoap.data.room.RoomRepository
 import com.awddrhz.todoap.data.room.ToDoItem
-import com.awddrhz.todoap.data.room.RoomManager
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val roomManager: RoomManager = RoomManagerImpl(application)
+@HiltViewModel
+class MainViewModel @Inject constructor(private val roomRepository: RoomRepository) : ViewModel() {
 
     private val todoItemList: MutableLiveData<List<ToDoItem>> = MutableLiveData()
     val todoItemResult: LiveData<List<ToDoItem>> = todoItemList
@@ -19,7 +20,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      * Provides all data from room
      */
     fun getAllItem() {
-        val result = roomManager.getAllItem()
+        val result = roomRepository.getAllItem()
         todoItemList.postValue(result)
     }
 
@@ -30,7 +31,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun insertItem(item: ToDoItem) {
         todoItemList.value.let {
             todoItemList.postValue(it?.plus(item))
-            roomManager.insertItem(item)
+            roomRepository.insertItem(item)
         }
     }
 
@@ -45,7 +46,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             list?.set(it, item)
             todoItemList.value = list!!
         }
-        roomManager.updateItem(item)
+        roomRepository.updateItem(item)
     }
 
     /**
@@ -55,7 +56,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteItem(item: ToDoItem) {
         todoItemList.value.let {
             todoItemList.postValue(it?.minus(item))
-            roomManager.deleteItem(item)
+            roomRepository.deleteItem(item)
         }
     }
 }

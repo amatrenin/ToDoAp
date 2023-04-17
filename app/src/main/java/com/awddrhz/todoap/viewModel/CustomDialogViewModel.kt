@@ -4,12 +4,14 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.awddrhz.todoap.data.sharedPrefs.PrefManagerImpl
+import androidx.lifecycle.ViewModel
 import com.awddrhz.todoap.data.room.ToDoItem
-import com.awddrhz.todoap.data.sharedPrefs.PrefManager
+import com.awddrhz.todoap.data.sharedPrefs.PrefRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class CustomDialogViewModel(application: Application) : AndroidViewModel(application) {
-    private val prefManager: PrefManager = PrefManagerImpl(application)
+@HiltViewModel
+class CustomDialogViewModel @Inject constructor(private val prefRepository: PrefRepository) : ViewModel() {
 
     private val todoItem: MutableLiveData<ToDoItem> = MutableLiveData()
     val todoItemResult: LiveData<ToDoItem> = todoItem
@@ -18,16 +20,16 @@ class CustomDialogViewModel(application: Application) : AndroidViewModel(applica
     * Provides preferences values for ToDo item
      */
     fun getToDoItemFromPrefs() {
-        val result = prefManager.getToDoItem()
+        val result = prefRepository.getToDoItem()
         todoItem.postValue(result)
     }
 
     /**
-     * Save data in shared preferences manager
+     * Save data in shared preferences Repository
      * @param key - provide prefs information to save data
      * @param value - provide data that need to be saved in prefs
      */
     fun saveDataInPrefs(key: String, value: String) {
-        prefManager.saveDataInPrefs(key, value)
+        prefRepository.saveDataInPrefs(key, value)
     }
 }

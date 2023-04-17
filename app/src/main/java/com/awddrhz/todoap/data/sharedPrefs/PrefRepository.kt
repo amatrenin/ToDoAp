@@ -2,7 +2,7 @@ package com.awddrhz.todoap.data.sharedPrefs
 
 import com.awddrhz.todoap.data.room.ToDoItem
 
-interface PrefManager {
+interface PrefRepository {
 
     /**
      * Return todo item from prefs

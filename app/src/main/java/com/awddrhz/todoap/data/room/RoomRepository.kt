@@ -1,6 +1,6 @@
 package com.awddrhz.todoap.data.room
 
-interface RoomManager {
+interface RoomRepository {
 
     /**
      * Return todo item from room data base
