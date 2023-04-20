@@ -1,6 +1,5 @@
 package com.awddrhz.todoap.data.sharedPrefs
 
-import android.app.Application
 import android.content.SharedPreferences
 import com.awddrhz.todoap.data.room.ToDoItem
 import javax.inject.Inject
@@ -9,7 +8,6 @@ import javax.inject.Inject
  * Repository that handles logic with shared preferences
  */
 class PrefRepositoryImpl @Inject constructor(private val sharedPreferences: SharedPreferences) : PrefRepository {
-
 
     override fun getToDoItem(): ToDoItem {
         val title = sharedPreferences.getString(PREFS_TITLE_KEY, PREFS_DEFAULT_VALUE) ?: PREFS_DEFAULT_VALUE

@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.awddrhz.todoap.data.room.ItemOnClick
 import com.awddrhz.todoap.viewModel.MainViewModel
 import com.awddrhz.todoap.R
-
 import com.awddrhz.todoap.adapter.CustomAdapter
 import com.awddrhz.todoap.data.room.ToDoItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton

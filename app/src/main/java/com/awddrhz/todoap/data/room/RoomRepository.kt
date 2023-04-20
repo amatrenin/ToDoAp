@@ -3,7 +3,7 @@ package com.awddrhz.todoap.data.room
 interface RoomRepository {
 
     /**
-     * Return todo item from room data base
+     * Get todo item from room data base
      */
     fun getAllItem(): List<ToDoItem>
 

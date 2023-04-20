@@ -1,9 +1,7 @@
 package com.awddrhz.todoap.data.room
 
-import android.content.Context
 import com.awddrhz.todoap.room.ToDoDao
 import javax.inject.Inject
-
 
 /**
  * Repository that handles logic with room data base
