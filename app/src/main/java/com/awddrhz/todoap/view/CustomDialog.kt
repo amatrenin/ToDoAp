@@ -65,7 +65,7 @@ class CustomDialog(
 
     private fun observers() {
         customDialogViewModel.todoItemResult.observe(this) {
-            if (isNewItem){
+            if (isNewItem) {
                 inputFieldTitle.setText(it.title)
                 inputFieldDescription.setText(it.description)
             }
@@ -80,19 +80,19 @@ class CustomDialog(
         dialogLabel = view.findViewById<Button>(R.id.dialog_label)
         okButton.setOnClickListener(this)
         cancelButton.setOnClickListener(this)
-        }
+    }
 
     private fun dialogSizeControl() {
-      val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
+        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
         params.width = ActionBar.LayoutParams.MATCH_PARENT
         params.height = ActionBar.LayoutParams.WRAP_CONTENT
         dialog!!.window!!.attributes = params as LayoutParams
-       }
+    }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.dialogOkButton -> {
-               okButtonCliker()
+                okButtonCliker()
             }
             R.id.dialogCancelButton -> {
                 dismiss()
@@ -103,12 +103,11 @@ class CustomDialog(
     }
 
     private fun okButtonCliker() {
-            if (isNewItem) {
-                buttonOkBeenClicked()
-            }
-            else {
-                buttonUpdateBeenClicked()
-            }
+        if (isNewItem) {
+            buttonOkBeenClicked()
+        } else {
+            buttonUpdateBeenClicked()
+        }
     }
 
     private fun buttonUpdateBeenClicked() {

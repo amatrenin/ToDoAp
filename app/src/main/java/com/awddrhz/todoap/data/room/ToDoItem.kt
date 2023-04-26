@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class ToDoItem(
-    @PrimaryKey (autoGenerate = true) val id: Int,
-    @ColumnInfo (name = "titleColumn") val title: String,
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "titleColumn") val title: String,
     val description: String
 )

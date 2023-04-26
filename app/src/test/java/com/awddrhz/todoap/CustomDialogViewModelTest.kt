@@ -15,8 +15,8 @@ class CustomDialogViewModelTest {
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private lateinit var subject : CustomDialogViewModel
-    private val prefRepository : PrefRepository = mock()
+    private lateinit var subject: CustomDialogViewModel
+    private val prefRepository: PrefRepository = mock()
 
     private val toDoItemMock: ToDoItem = ToDoItem(0, "testTitle", "testDescription")
     private val keyTestValue: String = "keyTest"

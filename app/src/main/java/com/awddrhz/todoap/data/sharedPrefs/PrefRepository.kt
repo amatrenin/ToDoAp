@@ -7,7 +7,7 @@ interface PrefRepository {
     /**
      * Return todo item from prefs
      */
-    fun getToDoItem() : ToDoItem
+    fun getToDoItem(): ToDoItem
 
     /**
      * Saving data in prefs

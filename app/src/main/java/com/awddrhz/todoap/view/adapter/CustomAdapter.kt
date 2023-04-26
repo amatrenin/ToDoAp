@@ -1,4 +1,4 @@
-package com.awddrhz.todoap.adapter
+package com.awddrhz.todoap.view.adapter
 
 
 import android.view.LayoutInflater
@@ -11,7 +11,10 @@ import com.awddrhz.todoap.data.room.ItemOnClick
 import com.awddrhz.todoap.R
 import com.awddrhz.todoap.data.room.ToDoItem
 
-class CustomAdapter(private var mList: MutableList<ToDoItem>, private val itemOnClick: ItemOnClick) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(
+    private var mList: MutableList<ToDoItem>,
+    private val itemOnClick: ItemOnClick
+) : RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
     // create new views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,8 +31,8 @@ class CustomAdapter(private var mList: MutableList<ToDoItem>, private val itemOn
 
         val ItemsViewModel = mList[position]
 
-       holder.title.text = ItemsViewModel.title
-       holder.description.text = ItemsViewModel.description
+        holder.title.text = ItemsViewModel.title
+        holder.description.text = ItemsViewModel.description
         holder.container.setOnClickListener {
             itemOnClick.onClikedItem(mList[position])
         }

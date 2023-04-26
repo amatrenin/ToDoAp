@@ -9,13 +9,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CustomDialogViewModel @Inject constructor(private val prefRepository: PrefRepository) : ViewModel() {
+class CustomDialogViewModel @Inject constructor(private val prefRepository: PrefRepository) :
+    ViewModel() {
 
     private val todoItem: MutableLiveData<ToDoItem> = MutableLiveData()
     val todoItemResult: LiveData<ToDoItem> = todoItem
 
     /**
-    * Provides preferences values for ToDo item
+     * Provides preferences values for ToDo item
      */
     fun getToDoItemFromPrefs() {
         val result = prefRepository.getToDoItem()

@@ -27,12 +27,12 @@ class RoomRepositoryImplTest {
     )
 
     @Before
-    fun setup(){
+    fun setup() {
         subject = RoomRepositoryImpl(todoDaoMock)
     }
 
     @Test
-    fun getAllItem_success(){
+    fun getAllItem_success() {
         `when`(todoDaoMock.getAllItems()).thenReturn(mockList)
         subject.getAllItem()
         val result = subject.getAllItem()

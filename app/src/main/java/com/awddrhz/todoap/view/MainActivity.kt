@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.awddrhz.todoap.data.room.ItemOnClick
 import com.awddrhz.todoap.viewModel.MainViewModel
 import com.awddrhz.todoap.R
-import com.awddrhz.todoap.adapter.CustomAdapter
+import com.awddrhz.todoap.view.adapter.CustomAdapter
 import com.awddrhz.todoap.data.room.ToDoItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
     private lateinit var adapter: CustomAdapter
     private lateinit var recyclerView: RecyclerView
 
-    private lateinit var data : List<ToDoItem>
+    private lateinit var data: List<ToDoItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
         observers()
 
         fab.setOnClickListener {
-            val dialogFragment = CustomDialog( true, null)
+            val dialogFragment = CustomDialog(true, null)
             dialogFragment.show(supportFragmentManager, getString(R.string.custom_dialog))
         }
         mainViewModel.getAllItem()
@@ -76,12 +76,14 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
 
             // Let's draw our delete view
             @RequiresApi(Build.VERSION_CODES.M)
-            override fun onChildDraw(canvas: Canvas,
-                                     recyclerView: RecyclerView,
-                                     viewHolder: ViewHolder,
-                                     dX: Float, dY: Float,
-                                     actionState: Int,
-                                     isCurrentlyActive: Boolean) {
+            override fun onChildDraw(
+                canvas: Canvas,
+                recyclerView: RecyclerView,
+                viewHolder: ViewHolder,
+                dX: Float, dY: Float,
+                actionState: Int,
+                isCurrentlyActive: Boolean
+            ) {
                 val itemView = viewHolder.itemView
                 val itemHeight = itemView.bottom - itemView.top
 
@@ -106,9 +108,11 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
                 deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom)
                 deleteIcon.draw(canvas)
 
-                super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY,
+                super.onChildDraw(
+                    canvas, recyclerView, viewHolder, dX, dY,
                     actionState,
-                    isCurrentlyActive)
+                    isCurrentlyActive
+                )
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
@@ -125,7 +129,11 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
                 mainViewModel.deleteItem(deletedTodoItem)
                 // below line is to display our snackbar with action.
-                Snackbar.make(recyclerView, "Deleted " + deletedTodoItem.title, Snackbar.LENGTH_LONG)
+                Snackbar.make(
+                    recyclerView,
+                    "Deleted " + deletedTodoItem.title,
+                    Snackbar.LENGTH_LONG
+                )
                     .setAction(
                         getString(R.string.undo),
                         View.OnClickListener {
@@ -144,16 +152,16 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
     }
 
     private fun screenDataValidation(list: List<ToDoItem>) {
-            if (list.isEmpty()) {
-                setupStub(showStub = true, showRecycler = false)
-            } else {
-                setupStub(showStub = false, showRecycler = true)
+        if (list.isEmpty()) {
+            setupStub(showStub = true, showRecycler = false)
+        } else {
+            setupStub(showStub = false, showRecycler = true)
         }
     }
 
     private fun setupStub(showStub: Boolean, showRecycler: Boolean) {
-         stubContainer.isVisible = showStub
-         recyclerView.isVisible = showRecycler
+        stubContainer.isVisible = showStub
+        recyclerView.isVisible = showRecycler
     }
 
     private fun initView() {
@@ -169,5 +177,5 @@ class MainActivity : AppCompatActivity(), ItemOnClick {
         val dialogFragment = CustomDialog(false, item)
         dialogFragment.show(supportFragmentManager, getString(R.string.custom_dialog))
     }
-  }
+}
 

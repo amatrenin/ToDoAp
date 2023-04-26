@@ -1,12 +1,10 @@
 package com.awddrhz.todoap
 
-import android.app.Application
 import android.content.SharedPreferences
 import com.awddrhz.todoap.data.sharedPrefs.PrefRepositoryImpl
 import junit.framework.TestCase.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 class PrefRepositoryImplTest {

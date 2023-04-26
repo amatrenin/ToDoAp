@@ -1,10 +1,8 @@
 package com.awddrhz.todoap.di
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.awddrhz.todoap.data.room.AppDatabase
 import com.awddrhz.todoap.data.room.RoomRepository
 import com.awddrhz.todoap.data.room.RoomRepositoryImpl
@@ -27,12 +25,12 @@ class DataModule {
     @Singleton
     @Provides
     fun providesRoomDatabase(@ApplicationContext context: Context) = Room.databaseBuilder(
-    context,
-    AppDatabase::class.java, DATABASE_NAME
+        context,
+        AppDatabase::class.java, DATABASE_NAME
     )
-    .allowMainThreadQueries()
-    .fallbackToDestructiveMigration()
-    .build()
+        .allowMainThreadQueries()
+        .fallbackToDestructiveMigration()
+        .build()
 
     @Singleton
     @Provides
@@ -51,5 +49,6 @@ class DataModule {
 
     @Singleton
     @Provides
-    fun providesSharedPrefs(sharedPreferences: SharedPreferences): PrefRepository = PrefRepositoryImpl(sharedPreferences)
+    fun providesSharedPrefs(sharedPreferences: SharedPreferences): PrefRepository =
+        PrefRepositoryImpl(sharedPreferences)
 }
