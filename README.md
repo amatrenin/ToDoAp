@@ -19,3 +19,11 @@
 <br><b>Shared Preferences</b></br>
 <br>
 <li>If you have a relatively small collection of key-values that you'd like to save, you can use the SharedPreferences APIs. A SharedPreferences object points to a file containing key-value pairs and provides simple methods to read and write them. Each SharedPreferences file is managed by the framework and can be private or shared.</li>
+
+<br><b>Unit test</b></br>
+
+<li>Local tests enable you to evaluate your app's logic more quickly. However, not being able to interact with the Android framework creates a limitation in the types of tests you can run.</li>
+
+<li>A unit test verifies the behavior of a small section of code, the unit under test. It does so by executing that code and checking the result.</li>
+
+<li>Unit tests are usually simple but their setup can be problematic when the unit under test is not designed with testability in mind.</li>
